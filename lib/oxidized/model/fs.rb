@@ -35,13 +35,19 @@ class FS < Oxidized::Model
   end
 
   cmd 'show version' do |cfg|
-    comment cfg
+    out = []
+    cfg.each_line do |line|
+      next if line =~ /uptime is/
+
+      out << line
+    end
+    comment out.join
   end
 
   cmd 'show system' do |cfg|
     out = []
     cfg.each_line do |line|
-      next if line =~ /FS-SW Up Time/
+      next if line =~ /Up Time/
       next if line =~ /Temperature [0-9]:/
 
       out << line
